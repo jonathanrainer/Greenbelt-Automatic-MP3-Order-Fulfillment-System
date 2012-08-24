@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,6 +35,8 @@ public class MainSystem {
     private Config configuration;
     private DestinationEngine destinationEngine;
     private FileCopyEngine fileCopyEngine;
+    private PropertyChangeSupport mPcs;
+    private int filesCopied;
     
 /**
  * The constructor for the entire system, built according to the inputted
@@ -78,7 +81,7 @@ public class MainSystem {
             orderList = new ArrayList<Order>();
             gui.updateStatus("Cannot establish MYSQL connection");
         }
-        
+        mPcs = new PropertyChangeSupport(this);
     }
     
     
@@ -262,101 +265,84 @@ public class MainSystem {
                 final String destination = (String) gui.getDestinationList().
                         getSelectedItem().toString();
                 String fileName = "";
-                
                 try
                 {
-                    // Create an ArrayList of the talks required for this order
-                    final ArrayList<Talk> talksComplete = order.getTalks();
                     final ArrayList<Talk> talks = preCopyingSpaceCheck(order,
                             talksLocation, destination);
-                    Iterator it2 = talks.iterator();
-                    int j = 0;
-                    while(it2.hasNext())
+                    Iterator it1 = talks.iterator();
+                    filesCopied = 0;
+                    while(it1.hasNext())
                     {
-                            j++;
-                            gui.getMainFrame().setCursor(Cursor.WAIT_CURSOR);
-                            gui.getStatus().setText("Copying Files");
-                            Talk talk = (Talk) it2.next();
-                            fileCopyEngine = new FileCopyEngine(talksLocation, 
-                                    talk.getFileName(), destination, j);
-                            fileCopyEngine.addPropertyChangeListener(new 
-                                    PropertyChangeListener()
-                            {
+                        gui.getMainFrame().setCursor(Cursor.WAIT_CURSOR);
+                        gui.getStatus().setText("Copying Files");
+                        Talk talk = (Talk) it1.next();
+                        fileCopyEngine = new FileCopyEngine(talksLocation, 
+                                talk.getFileName(), destination, filesCopied);
+                        fileCopyEngine.addPropertyChangeListener(new 
+                                PropertyChangeListener()
+                        {
                             @Override
-                                public void propertyChange(PropertyChangeEvent 
-                                        evt) 
-
-                                {
-                                    try
-                                    {
-                                        if ("progress".equals(evt.
+                            public void propertyChange(PropertyChangeEvent evt)
+                            {
+                                if ("progress".equals(evt.
                                                 getPropertyName()))
+                                {
+                                    int progress = (Integer) evt.getNewValue();
+                                    gui.getProgressBar().setValue(progress);
+                                }
+                                if ("state".equals(evt.getPropertyName()))
+                                {
+                                    String value = evt.getNewValue().toString();
+                                    if (value.equals("DONE") && filesCopied < talks.size())
+                                    {
+                                        filesCopied++;
+                                    }
+                                    if(value.equals("DONE") && filesCopied == talks.size())
+                                    {
+                                        try
                                         {
-                                            int progress = (Integer) evt.
-                                                    getNewValue();
-                                            gui.getProgressBar().
-                                                    setValue(progress);
+                                            gui.getMainFrame().setCursor(Cursor.DEFAULT_CURSOR);
+                                            gui.getRefresh().setEnabled(true);
+                                            gui.getFulfillOrder().setEnabled
+                                                    (true);
+                                            queryEngine.setOrderFulfilled
+                                                    (order.getOrderID());
+                                            updateOrderList();
+                                            updateOrdersToFulfillComboBox
+                                                    (gui, orderList);
+                                            gui.setOrderTextBox(null);
+                                            gui.updateStatus("<html><h4>"
+                                                    + "<b><font color ="
+                                                    + " \"green\"> Order "
+                                                    + "Fulfilled! </b></h4>"
+                                                    + "</font></html>");
                                         }
-                                        else if ("state".equals(evt.
-                                                getPropertyName())
-                                                && fileCopyEngine.isDone()
-                                                && fileCopyEngine.get()
-                                                == talksComplete.size())
+                                        catch(Exception e)
                                         {
-                                            if(postCopyingFileCheck(order, 
-                                                    talksLocation, 
-                                                    destination ))
-                                            {
-                                                gui.getMainFrame().setCursor
-                                                        (Cursor.DEFAULT_CURSOR);
-                                                gui.getRefresh().setEnabled(true);
-                                                gui.getFulfillOrder().setEnabled
-                                                        (true);
-                                                queryEngine.setOrderFulfilled
-                                                        (order.getOrderID());
-                                                updateOrderList();
-                                                updateOrdersToFulfillComboBox
-                                                        (gui, orderList);
-                                                gui.setOrderTextBox(null);
-                                                gui.updateStatus("<html><h4>"
-                                                        + "<b><font color ="
-                                                        + " \"green\"> Order "
-                                                        + "Fulfilled! </b></h4>"
-                                                        + "</font></html>");
-                                            }
-                                            else
-                                            {
-                                                gui.updateStatus("Copying "
-                                                        + "Failed");
-                                            }
-                                            
-                                        }
-                                        else if ("state".equals(evt.
-                                                getPropertyName())
-                                                && fileCopyEngine.isDone()
-                                                && fileCopyEngine.get()
-                                                == talks.size())
-                                        {
-                                            System.out.println("Error! "
-                                                    + "fix me :)");
+
                                         }
                                     }
-                                    catch(Exception ie)
-                                            {
-                                                
-                                            }
                                 }
-                            });
-                            fileCopyEngine.execute();
-                        }
-                        
+
+                                else
+                                {
+                                    System.out.println("Property is " + evt.getPropertyName());
+                                    System.out.println("State is " + evt.getNewValue());
+                                    System.out.println("Files Copied is " + filesCopied);
+                                }
+                            }
+                        });
+                        fileCopyEngine.execute();
+                    }
                 }
-                catch (Exception ex)
-                        {
-                            
-                        }
+                catch(Exception ex)
+                {
+                    
+                }
+                
             }
         });
+
         gui.getPreferences().addActionListener(new ActionListener()
         {
             @Override
@@ -444,6 +430,7 @@ public class MainSystem {
         return talksToReturn;
     }
 }
+    
                 
 
 
