@@ -64,10 +64,7 @@ public class QueryEngine {
            //order to a new order object and adding these to a collection of
            //orders. These can then be iterated through to discover which can
            //be fulfilled.
-           if(!(rs1.next()))
-           {
-               return null;
-           }
+           int i = 0;
            while(rs1.next())
            {
                int id = rs1.getInt("id");
@@ -95,8 +92,12 @@ public class QueryEngine {
                stmt2.close();
                Order order = new Order(id, false, talks, true);
                results.add(order);
+               i++;
            }
-           
+           if (i == 0)
+           {
+               return null;
+           }
            //Now we have a new order object that relates to the order we need to
            //check if it's actually possible to fulfill that order at all so we
            //iterate through the orders until we find one that is unavailable
@@ -192,7 +193,7 @@ public class QueryEngine {
 
             //STEP 4: Execute a query
             stmt = conn.createStatement();
-            stmt.executeUpdate("UPDATE `gb_talks`.`orders` SET `fulfilled` = 1 "
+            stmt.executeUpdate("UPDATE `gb_talks`.`orders` SET `complete` = 1 "
                     + "WHERE `id` = " + orderID);
 
             //STEP 6: Clean-up environment

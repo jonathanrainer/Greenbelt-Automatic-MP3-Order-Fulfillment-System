@@ -31,20 +31,7 @@ public final class Talk {
         this.year = year;
         this.speaker = speaker;
         this.title = title;
-        String correctedTalkID = "";
-        if(talkID < 100 && talkID >= 10)
-        {
-            correctedTalkID = "0" + talkID;
-        }
-        if(talkID < 10)
-        {
-            correctedTalkID = "00" + talkID;
-        }
-        else
-        {
-            correctedTalkID = "" + talkID;
-        }
-        fileName = "gb" + getShortYear() + "-" + correctedTalkID + ".mp3";
+        fileName = "gb" + getShortYear() + "-" + getNiceTalkID() + ".mp3";
     }
     
     /**
@@ -105,6 +92,22 @@ public final class Talk {
         return fileName;
     }
     
-    
+    public String getNiceTalkID()
+    {
+        String correctedTalkID = "";
+        if(talkID < 100 && talkID >= 10)
+        {
+            correctedTalkID = "0" + talkID;
+        }
+        if(talkID < 10)
+        {
+            correctedTalkID = "00" + talkID;
+        }
+        else
+        {
+            correctedTalkID = "" + talkID;
+        }
+        return correctedTalkID;
+    }
     
 }

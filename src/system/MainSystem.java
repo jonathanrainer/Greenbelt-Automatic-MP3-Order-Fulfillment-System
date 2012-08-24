@@ -231,7 +231,7 @@ public class MainSystem {
                         Talk talk = (Talk) it1.next();
                         textBoxContents = textBoxContents + 
                                 "\n#" + i + ": " + 
-                                talk.getTalkID() + ", " + talk.getTitle() + 
+                                talk.getNiceTalkID() + ", " + talk.getTitle() + 
                                 ", " + talk.getSpeaker() + ", " + talk.getYear(); 
                         i++;
                     }
