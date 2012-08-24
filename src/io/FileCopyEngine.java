@@ -4,6 +4,7 @@
  */
 package io;
 
+import java.beans.PropertyChangeSupport;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
@@ -14,29 +15,30 @@ import javax.swing.SwingWorker;
  *
  * @author jonathanrainer
  */
-public class FileCopyEngine extends SwingWorker<Integer,Void> {
+public class FileCopyEngine extends SwingWorker<Void,Void> {
     
     private String talksLocation;
     private String fileName;
     private String destination;
     private File originalFile;
     private File fileDestination;
-    private int filesComplete;
+    private int filesCopied;
+    private PropertyChangeSupport mPcs;
     
     public FileCopyEngine(String talksLocation, String fileName, String
-            destination, int filesComplete)
+            destination, int filesCopied)
     {
         this.talksLocation = talksLocation;
         this.fileName = fileName;
         this.destination = destination;
         originalFile = new File(talksLocation + File.separator + fileName);
-        fileDestination = new File(destination + File.separator + fileName);
-        this.filesComplete = filesComplete - 1;
-        
+        fileDestination = new File(destination + File.separator + fileName); 
+        filesCopied = this.filesCopied;
+        mPcs = new PropertyChangeSupport(this);
     }
     
     @Override
-    protected Integer doInBackground() throws IOException
+    protected Void doInBackground() throws IOException
     {      
         URL originalFileURL = originalFile.toURL();
         URLConnection connection = originalFileURL.openConnection();
@@ -64,9 +66,8 @@ public class FileCopyEngine extends SwingWorker<Integer,Void> {
         }
         
         inputStream.close();
-        
-        filesComplete += 1;
-        return filesComplete;
+        filesCopied++;
+        return null;
     }
 
     public int calculateProgress(float originalFileLength, float current)
@@ -75,9 +76,5 @@ public class FileCopyEngine extends SwingWorker<Integer,Void> {
         return (int) progress;
     }
     
-    public int getFilesComplete()
-    {
-        return filesComplete;
-    }
    
 }
