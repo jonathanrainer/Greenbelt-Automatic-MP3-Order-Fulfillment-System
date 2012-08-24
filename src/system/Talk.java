@@ -99,7 +99,7 @@ public final class Talk {
         {
             correctedTalkID = "0" + talkID;
         }
-        if(talkID < 10)
+        else if(talkID < 10)
         {
             correctedTalkID = "00" + talkID;
         }
