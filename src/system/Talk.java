@@ -32,9 +32,13 @@ public final class Talk {
         this.speaker = speaker;
         this.title = title;
         String correctedTalkID = "";
-        if(talkID < 10)
+        if(talkID < 100 && talkID >= 10)
         {
             correctedTalkID = "0" + talkID;
+        }
+        if(talkID < 10)
+        {
+            correctedTalkID = "00" + talkID;
         }
         else
         {
