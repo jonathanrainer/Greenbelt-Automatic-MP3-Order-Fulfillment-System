@@ -31,7 +31,7 @@ public final class Talk {
         this.year = year;
         this.speaker = speaker;
         this.title = title;
-        fileName = "gb" + getShortYear() + "-" + getNiceTalkID() + ".mp3";
+        fileName = "gb" + getShortYear() + "-" + getNiceTalkID() + "mp3.mp3";
     }
     
     /**
@@ -111,3 +111,4 @@ public final class Talk {
     }
     
 }
+ 

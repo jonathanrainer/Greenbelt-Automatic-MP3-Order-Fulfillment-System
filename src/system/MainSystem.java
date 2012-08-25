@@ -15,6 +15,7 @@ import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -266,6 +267,18 @@ public class MainSystem {
                         get("talkslocation");
                 final String destination = (String) gui.getDestinationList().
                         getSelectedItem().toString();
+                Iterator hashMapCreationIterator = order.getTalks().iterator();
+                int i = 0;
+                while(hashMapCreationIterator.hasNext() && i < order.
+                        getTalks().size())
+                {
+                    HashMap<String, Integer> fileMap = new HashMap<String, 
+                            Integer>();
+                    Talk talk = (Talk) hashMapCreationIterator.next();
+                    fileMap.put(talk.getFileName(), i);
+                    i++;
+                }
+
                 try
                 {
                     final ArrayList<Talk> talks = preCopyingSpaceCheck(order,
@@ -282,8 +295,10 @@ public class MainSystem {
                     while(it1.hasNext())
                     {
                         gui.getMainFrame().setCursor(Cursor.WAIT_CURSOR);
-                        gui.getStatus().setText("Copying Files");
+                        gui.updateStatus("Copying Files ( " + filesCopied + 
+                                " of " + talks.size());
                         Talk talk = (Talk) it1.next();
+                        final int[] progressArray = new int[talks.size()];  
                         fileCopyEngine = new FileCopyEngine(talksLocation, 
                                 talk.getFileName(), destination);
                         fileCopyEngine.addPropertyChangeListener(new 
@@ -336,9 +351,9 @@ public class MainSystem {
 
                                 else
                                 {
-                                    System.out.println("Property is " + evt.getPropertyName());
-                                    System.out.println("State is " + evt.getNewValue());
-                                    System.out.println("Files Copied is " + filesCopied);
+                                    gui.updateStatus("Copying Files ( " + 
+                                            filesCopied + " of " + 
+                                            talks.size() + " )");
                                 }
                             }
                         });

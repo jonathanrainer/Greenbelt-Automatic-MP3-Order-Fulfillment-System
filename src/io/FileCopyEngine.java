@@ -30,7 +30,7 @@ public class FileCopyEngine extends SwingWorker<Void,Void> {
         this.fileName = fileName;
         this.destination = destination;
         originalFile = new File(talksLocation + File.separator + fileName);
-        fileDestination = new File(destination + File.separator + fileName); 
+        fileDestination = new File(destination + File.separator + fileName);
     }
     
     @Override
@@ -71,5 +71,10 @@ public class FileCopyEngine extends SwingWorker<Void,Void> {
         return (int) progress;
     }
     
+    @Override
+    public String toString()
+    {
+        return fileName;
+    }
    
 }
