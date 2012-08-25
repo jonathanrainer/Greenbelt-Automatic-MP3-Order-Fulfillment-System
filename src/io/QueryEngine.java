@@ -96,7 +96,7 @@ public class QueryEngine {
            }
            if (i == 0)
            {
-               return null;
+               return results;
            }
            //Now we have a new order object that relates to the order we need to
            //check if it's actually possible to fulfill that order at all so we
