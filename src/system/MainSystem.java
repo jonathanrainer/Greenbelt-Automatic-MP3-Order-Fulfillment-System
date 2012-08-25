@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.comparator.SizeFileComparator;
 
@@ -256,6 +257,7 @@ public class MainSystem {
                 {
                     return;
                 }
+                
                 gui.getRefresh().setEnabled(false);
                 gui.getFulfillOrder().setEnabled(false);
 
@@ -264,11 +266,17 @@ public class MainSystem {
                         get("talkslocation");
                 final String destination = (String) gui.getDestinationList().
                         getSelectedItem().toString();
-                String fileName = "";
                 try
                 {
                     final ArrayList<Talk> talks = preCopyingSpaceCheck(order,
                             talksLocation, destination);
+                    if (talks.size() < order.getTalks().size())
+                    {
+                        JOptionPane.showMessageDialog(gui.getMainFrame(), "Please"
+                                + " fulfill this order manually as it won't fit"
+                                + "on one memory stick.");
+                        return;
+                    }
                     Iterator it1 = talks.iterator();
                     filesCopied = 0;
                     while(it1.hasNext())
@@ -297,7 +305,9 @@ public class MainSystem {
                                     {
                                         filesCopied++;
                                     }
-                                    if(value.equals("DONE") && filesCopied == talks.size())
+                                    if(value.equals("DONE") && filesCopied == talks.size()
+                                            && postCopyingFileCheck(order, 
+                                            talksLocation, destination))
                                     {
                                         try
                                         {
@@ -332,6 +342,7 @@ public class MainSystem {
                                 }
                             }
                         });
+                        
                         fileCopyEngine.execute();
                     }
                 }
