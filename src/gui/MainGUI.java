@@ -23,6 +23,7 @@ public class MainGUI {
     private JMenuBar menuBar;
     private JMenu fileMenu;
     private JMenuItem preferences;
+    private JMenuItem workCalculation;
     private JMenuItem exit;
     private JPanel topPanel;
     private JLabel logo;
@@ -62,9 +63,11 @@ public class MainGUI {
         menuBar = new JMenuBar();
         fileMenu = new JMenu("File");
         preferences = new JMenuItem("Preferences");
+        workCalculation = new JMenuItem("Next Job Calculation");
         exit = new JMenuItem("Exit");
         menuBar.add(fileMenu);
         fileMenu.add(preferences);
+        fileMenu.add(workCalculation);
         fileMenu.add(exit);
         mainFrame.setJMenuBar(menuBar);
         
@@ -247,19 +250,28 @@ public class MainGUI {
     }
     
 
-    public JMenuItem getExit() {
+    public JMenuItem getExit() 
+    {
         return exit;
     }
 
-    public JMenu getFileMenu() {
+    public JMenu getFileMenu() 
+    {
         return fileMenu;
     }
 
-    public JMenuBar getMenuBar() {
+    public JMenuBar getMenuBar() 
+    {
         return menuBar;
     }
 
-    public JMenuItem getPreferences() {
+    public JMenuItem getPreferences() 
+    {
         return preferences;
+    }
+    
+    public JMenuItem getNextWorkCalcultion()
+    {
+        return workCalculation;
     }
 }

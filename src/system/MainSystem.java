@@ -369,7 +369,28 @@ public class MainSystem {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-             System.exit(0);   
+                System.exit(0);   
+            }
+        });
+        
+        gui.getNextWorkCalcultion().addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                ArrayList<Order> orders = new ArrayList<Order>();
+                int i = 0;
+                while(i < gui.getOrderList().getItemCount())
+                {
+                    orders.add( (Order) gui.getOrderList().getItemAt(i));
+                    i++;
+                }
+                Iterator it1 = orders.iterator();
+                while(it1.hasNext())
+                {
+                    Order order = (Order) it1.next();
+                    ArrayList<Talk> talks = order.getTalks();
+                }
             }
         });
     }
