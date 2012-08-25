@@ -22,19 +22,15 @@ public class FileCopyEngine extends SwingWorker<Void,Void> {
     private String destination;
     private File originalFile;
     private File fileDestination;
-    private int filesCopied;
-    private PropertyChangeSupport mPcs;
-    
+
     public FileCopyEngine(String talksLocation, String fileName, String
-            destination, int filesCopied)
+            destination)
     {
         this.talksLocation = talksLocation;
         this.fileName = fileName;
         this.destination = destination;
         originalFile = new File(talksLocation + File.separator + fileName);
         fileDestination = new File(destination + File.separator + fileName); 
-        filesCopied = this.filesCopied;
-        mPcs = new PropertyChangeSupport(this);
     }
     
     @Override
@@ -66,7 +62,6 @@ public class FileCopyEngine extends SwingWorker<Void,Void> {
         }
         
         inputStream.close();
-        filesCopied++;
         return null;
     }
 

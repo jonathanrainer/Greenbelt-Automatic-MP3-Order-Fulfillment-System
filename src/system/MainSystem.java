@@ -277,7 +277,7 @@ public class MainSystem {
                         gui.getStatus().setText("Copying Files");
                         Talk talk = (Talk) it1.next();
                         fileCopyEngine = new FileCopyEngine(talksLocation, 
-                                talk.getFileName(), destination, filesCopied);
+                                talk.getFileName(), destination);
                         fileCopyEngine.addPropertyChangeListener(new 
                                 PropertyChangeListener()
                         {
