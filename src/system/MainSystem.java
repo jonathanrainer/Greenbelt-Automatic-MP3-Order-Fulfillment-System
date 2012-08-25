@@ -130,18 +130,18 @@ public class MainSystem {
     
     public void updateOrdersToFulfillComboBox(MainGUI gui, ArrayList<Order> orders)
     {
-        gui.getOrderList().removeAllItems();
-        Iterator it1 = orders.iterator();
-        int i = 0;
-        while(it1.hasNext())
-        {
-            Order order = (Order) it1.next();
-            if(order.getFulfillable())
+            gui.getOrderList().removeAllItems();
+            Iterator it1 = orders.iterator();
+            int i = 0;
+            while(it1.hasNext())
             {
-                gui.getOrderList().insertItemAt(order, i);
-                i++;
+                Order order = (Order) it1.next();
+                if(order.getFulfillable())
+                {
+                    gui.getOrderList().insertItemAt(order, i);
+                    i++;
+                }
             }
-        }
     }
     
     public void updateOrderList() throws Exception
