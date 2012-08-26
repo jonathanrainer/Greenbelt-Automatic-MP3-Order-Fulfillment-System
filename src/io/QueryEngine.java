@@ -34,7 +34,8 @@ public class QueryEngine {
    }
    
    
-   public ArrayList<Order> generateOrderList() throws SQLException, Exception
+   public ArrayList<Order> generateFulfillableOrderList() 
+           throws SQLException, Exception
    {
        Connection conn = null;
        Statement stmt1 = null;
@@ -134,6 +135,115 @@ public class QueryEngine {
                }
                
            }       
+           //STEP 6: Clean-up environment
+           rs1.close();
+           stmt1.close();
+           conn.close();
+       }
+//       catch(SQLException se)
+//       {
+//           //Handle errors for JDBC
+//           se.printStackTrace();
+//       }
+//       catch(Exception e)
+//       {
+//           //Handle errors for Class.forName
+//           e.printStackTrace();
+//       }
+       finally
+       {
+           //finally block used to close resources
+           try
+           {
+               if(stmt1!=null)
+               {
+                   stmt1.close();
+               }
+           }
+           catch(SQLException se2)
+           {
+               // nothing we can do
+           }
+      try
+      {
+         if(conn!=null)
+         {
+             conn.close();
+         }
+      }
+      catch(SQLException se)
+      {
+         se.printStackTrace();
+      }//end finally try
+      
+   }//end try
+       return results;
+   }
+   
+   public ArrayList<Order> generateCompleteOrderList() throws SQLException,
+           Exception
+   {
+       Connection conn = null;
+       Statement stmt1 = null;
+       Statement stmt2 = null;
+       Statement stmt3 = null;
+       ArrayList<Order> results = new ArrayList<Order>();
+       try
+       {
+           //STEP 2: Register JDBC driver
+           Class.forName("com.mysql.jdbc.Driver");
+           
+           //STEP 3: Open a connection
+           conn = DriverManager.getConnection(DB_URL,USER,PASS);
+           
+           //STEP 4: Execute a query
+           //In this case the query will extract all of the current orders in
+           //the order table regardless of whether they can be fulfilled or 
+           //not.
+           stmt1 = conn.createStatement();
+           ResultSet rs1 = stmt1.executeQuery("SELECT id FROM orders WHERE "
+                   + "complete = '0'");
+           
+           //STEP 5: Extract data from result set
+           //This will then extract the data from the previous query whilst
+           //running a second query to add the talk_id's associated with that
+           //order to a new order object and adding these to a collection of
+           //orders. These can then be iterated through to discover which can
+           //be fulfilled.
+           int i = 0;
+           while(rs1.next())
+           {
+               int id = rs1.getInt("id");
+               stmt2 = conn.createStatement();
+               ResultSet rs2 = stmt2.executeQuery("SELECT talk_id FROM "
+                       + "order_items WHERE order_id = '" + id + "'");
+               ArrayList<Talk> talks = new ArrayList<Talk>();
+               while(rs2.next())
+               {
+                   stmt3 = conn.createStatement();
+                   ResultSet rs3 = stmt3.executeQuery("SELECT id, year, speaker"
+                       + ", title FROM talks WHERE  id = " + rs2.getInt
+                           ("talk_id"));
+                   while(rs3.next())
+                   {
+                       Talk talk = new Talk(rs3.getInt("id"), rs3.getInt
+                               ("year"), rs3.getString("speaker"),
+                               rs3.getString("title"));
+                       talks.add(talk);
+                   }
+                   rs3.close();
+                   stmt3.close();
+               }
+               rs2.close();
+               stmt2.close();
+               Order order = new Order(id, false, talks, true);
+               results.add(order);
+               i++;
+           }
+           if (i == 0)
+           {
+               return results;
+           }
            //STEP 6: Clean-up environment
            rs1.close();
            stmt1.close();
