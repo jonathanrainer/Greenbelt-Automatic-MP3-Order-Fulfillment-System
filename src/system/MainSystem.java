@@ -3,6 +3,7 @@ package system;
 import config.Config;
 import gui.MainGUI;
 import gui.PreferencesWindow;
+import io.CSVEngine;
 import io.DestinationEngine;
 import io.FileCopyEngine;
 import io.QueryEngine;
@@ -22,6 +23,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.comparator.SizeFileComparator;
+import org.joda.time.DateTime;
 
 /**
  * A class to encompass the entire system.
@@ -39,6 +41,7 @@ public class MainSystem {
     private FileCopyEngine fileCopyEngine;
     private PropertyChangeSupport mPcs;
     private int filesCopied;
+    private HashMap<String, ArrayList<DateTime>> talkTimes;
     
 /**
  * The constructor for the entire system, built according to the inputted
@@ -410,6 +413,15 @@ public class MainSystem {
                     i++;
                 }
                 Iterator it1 = orders.iterator();
+                CSVEngine csvEngine = new CSVEngine();
+                File datesAndTimesFile = null;
+                JFileChooser fc = new JFileChooser();
+                int returnVal = fc.showOpenDialog(null);
+                if(returnVal == JFileChooser.APPROVE_OPTION)
+                {
+                    datesAndTimesFile = fc.getSelectedFile();
+                }
+                talkTimes = csvEngine.importDTFiles(datesAndTimesFile);
                 while(it1.hasNext())
                 {
                     Order order = (Order) it1.next();

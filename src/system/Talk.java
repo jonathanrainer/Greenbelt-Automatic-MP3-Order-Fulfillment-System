@@ -16,6 +16,8 @@ public final class Talk {
     private String title;
     // String to store the file name of this talk
     private String fileName;
+    // String to store files name with code appended
+    private String filePlusCode;
     
     /**
      * A constructor to create each talk object.
@@ -32,6 +34,7 @@ public final class Talk {
         this.speaker = speaker;
         this.title = title;
         fileName = "gb" + getShortYear() + "-" + getNiceTalkID() + "mp3.mp3";
+        filePlusCode = "gb" + getShortYear() + "-" + getNiceTalkID();
     }
     
     /**
@@ -110,5 +113,9 @@ public final class Talk {
         return correctedTalkID;
     }
     
+    public String getFilePlusCode()
+    {
+        return filePlusCode;
+    }
 }
  
