@@ -444,12 +444,23 @@ public class MainSystem {
                         TalksComparator talksComparator = new TalksComparator();
                         Collections.sort(talks, talksComparator);
                         Collections.reverse(talks);
+                        String alteredMinutes = "";
+                        if(talks.get(0).getTalkTime().getMinuteOfHour() < 10)
+                        {
+                            alteredMinutes = "0" + talks.get(0).getTalkTime().
+                                    getMinuteOfHour();
+                        }
+                        else
+                        {
+                            alteredMinutes = "" + talks.get(0).getTalkTime().
+                                    getMinuteOfHour();
+                        }
                         finalMessage = finalMessage + "The order with ID: " + 
                             order.getOrderID() + " will be available to fulfill"
-                            + " on " + talks.get(0).getTalkTime().dayOfWeek().
-                                getAsText() + " at " + talks.get(0).getTalkTime().
-                                getHourOfDay() + ":" + talks.get(0).
-                                getTalkTime().getMinuteOfHour() + "\n";
+                            + " at approximately " + talks.get(0).getTalkTime().dayOfWeek().
+                                getAsText() + " at " + (talks.get(0).getTalkTime().
+                                getHourOfDay() + 1) + ":" + alteredMinutes + 
+                                "\n";
                     }
                     
                 }
