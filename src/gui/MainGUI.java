@@ -57,7 +57,7 @@ public class MainGUI {
     public MainGUI()
     {
         // Create the main frame to store all other items within
-        mainFrame = new JFrame("Greenbelt Automatic Order Fulfillment System");
+        mainFrame = new JFrame("Greenbelt Automatic MP3 Order Fulfillment System");
         
         // Create the top menu bar and its two sub menus
         menuBar = new JMenuBar();
@@ -96,8 +96,8 @@ public class MainGUI {
         // Add the title text to the middle Panel
         middlePanel = new JPanel();
         middlePanel.setLayout(oneColumnTwoRows);
-        String titleText = "<html><h2><b>Greenbelt Automatic Order Fulfillment"
-                + " System</h2></b></html>";
+        String titleText = "<html><h2><b>Greenbelt Automatic MP3 Order "
+                + "Fulfillment System</h2></b></html>";
         title = new JLabel(titleText, JLabel.CENTER);
         middlePanel.add(title);
         
