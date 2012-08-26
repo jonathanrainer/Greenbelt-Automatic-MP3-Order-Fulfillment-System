@@ -36,7 +36,7 @@ public class FileCopyEngine extends SwingWorker<Void,Void> {
     @Override
     protected Void doInBackground() throws IOException
     {      
-        URL originalFileURL = originalFile.toURL();
+        URL originalFileURL = originalFile.toURI().toURL();
         URLConnection connection = originalFileURL.openConnection();
         InputStream inputStream = connection.getInputStream();
         
