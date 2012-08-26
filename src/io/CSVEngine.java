@@ -106,15 +106,14 @@ public class CSVEngine {
         return configs;
     }
     
-    public HashMap<String, ArrayList<DateTime>> importDTFiles(File file)
+    public HashMap<String, DateTime> importDTFiles(File file)
     {
         // Set up the ArrayLists to later be combined
         ArrayList<String> talks = new ArrayList<String>();
         ArrayList<String> dates = new ArrayList<String>();
         ArrayList<String> times = new ArrayList<String>();
         // Set up HashMap to store the results within.
-        HashMap<String, ArrayList<DateTime>> talksDAndT = new HashMap<String,
-                ArrayList<DateTime>>();
+        HashMap<String, DateTime> talksDAndT = new HashMap<String,DateTime>();
         try
         {
             // Create a buffered reader object to load in each new line of the .csv
@@ -167,7 +166,6 @@ public class CSVEngine {
         Iterator<String> it3 = times.iterator();
         while(it1.hasNext() && it2.hasNext() && it3.hasNext())
         {
-            ArrayList<DateTime> datesAndTimes = new ArrayList<DateTime>();
             String fullDate = it2.next();
             int year = Integer.parseInt(fullDate.substring(6));
             int month = Integer.parseInt(fullDate.substring(3,5));
@@ -176,7 +174,7 @@ public class CSVEngine {
             int hours = Integer.parseInt(fullTime.substring(0, 2));
             int minutes = Integer.parseInt(fullTime.substring(3,5));
             DateTime dateTime = new DateTime(year, month, day, hours, minutes, 0, 0);
-            talksDAndT.put(it1.next(), datesAndTimes);
+            talksDAndT.put(it1.next(), dateTime);
         }
         
         
