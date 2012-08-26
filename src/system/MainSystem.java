@@ -269,16 +269,16 @@ public class MainSystem {
                         getSelectedItem().toString();
                 Iterator hashMapCreationIterator = order.getTalks().iterator();
                 int i = 0;
+                final HashMap<String, Integer> fileMap = new HashMap<String, 
+                            Integer>();
                 while(hashMapCreationIterator.hasNext() && i < order.
                         getTalks().size())
                 {
-                    HashMap<String, Integer> fileMap = new HashMap<String, 
-                            Integer>();
                     Talk talk = (Talk) hashMapCreationIterator.next();
                     fileMap.put(talk.getFileName(), i);
                     i++;
                 }
-
+                System.out.println(fileMap);
                 try
                 {
                     final ArrayList<Talk> talks = preCopyingSpaceCheck(order,
@@ -292,13 +292,13 @@ public class MainSystem {
                     }
                     Iterator it1 = talks.iterator();
                     filesCopied = 0;
+                    final int[] progressArray = new int[talks.size()]; 
                     while(it1.hasNext())
                     {
                         gui.getMainFrame().setCursor(Cursor.WAIT_CURSOR);
                         gui.updateStatus("Copying Files ( " + filesCopied + 
                                 " of " + talks.size());
-                        Talk talk = (Talk) it1.next();
-                        final int[] progressArray = new int[talks.size()];  
+                        Talk talk = (Talk) it1.next(); 
                         fileCopyEngine = new FileCopyEngine(talksLocation, 
                                 talk.getFileName(), destination);
                         fileCopyEngine.addPropertyChangeListener(new 
@@ -310,7 +310,16 @@ public class MainSystem {
                                 if ("progress".equals(evt.
                                                 getPropertyName()))
                                 {
-                                    int progress = (Integer) evt.getNewValue();
+                                    int inputProgress = (Integer) evt.getNewValue();
+                                    String fileName = evt.getSource().toString();
+                                    int arrayLocation = fileMap.get(fileName);
+                                    progressArray[arrayLocation] = inputProgress;
+                                    int aggregateProgress = 0;
+                                    for(int i = 0; i < progressArray.length; i++)
+                                    {
+                                        aggregateProgress += progressArray[i];
+                                    }
+                                    int progress = aggregateProgress/talks.size();
                                     gui.getProgressBar().setValue(progress);
                                 }
                                 if ("state".equals(evt.getPropertyName()))
@@ -353,7 +362,7 @@ public class MainSystem {
                                 {
                                     gui.updateStatus("Copying Files ( " + 
                                             filesCopied + " of " + 
-                                            talks.size() + " )");
+                                            talks.size() + " completed )");
                                 }
                             }
                         });
