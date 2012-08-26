@@ -60,7 +60,9 @@ public class FileCopyEngine extends SwingWorker<Void,Void> {
             bytesRead = inputStream.read(buffer);
         }
         
+        out.close();
         inputStream.close();
+        
         return null;
     }
 
