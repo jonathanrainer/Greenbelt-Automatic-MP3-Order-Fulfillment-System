@@ -1,6 +1,7 @@
 package system;
 
 import java.util.ArrayList;
+import org.joda.time.DateTime;
 
 /**
  * This class defines all the functionality for Objects that represent orders in
@@ -28,6 +29,11 @@ public class Order {
      * fulfilled
      */
     private boolean fulfillable;
+    /**
+     * A value to show when the order will be fulfillable (time of the last talk
+     * plus 3 hours)
+     */
+    private DateTime whenFulfillable;
     
     /**
      * This creates a new order object to store information about one particular
@@ -96,5 +102,15 @@ public class Order {
     public String toString()
     {
         return "Order: " + order_id;
+    }
+    
+    public void setWhenFulfillable(DateTime whenFulfillable)
+    {
+        this.whenFulfillable = whenFulfillable;
+    }
+    
+    public DateTime getWhenFulfillable()
+    {
+        return whenFulfillable;
     }
 }
