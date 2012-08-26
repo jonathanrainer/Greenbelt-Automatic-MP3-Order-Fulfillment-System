@@ -1,5 +1,6 @@
 package system;
 
+import comparator.TalksComparator;
 import config.Config;
 import gui.MainGUI;
 import gui.PreferencesWindow;
@@ -16,6 +17,7 @@ import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import javax.swing.JComboBox;
@@ -41,7 +43,7 @@ public class MainSystem {
     private FileCopyEngine fileCopyEngine;
     private PropertyChangeSupport mPcs;
     private int filesCopied;
-    private HashMap<String, ArrayList<DateTime>> talkTimes;
+    private HashMap<String, DateTime> talkTimes;
     
 /**
  * The constructor for the entire system, built according to the inputted
@@ -406,6 +408,7 @@ public class MainSystem {
             public void actionPerformed(ActionEvent e)
             {
                 ArrayList<Order> orders = new ArrayList<Order>();
+                String finalMessage = "";
                 int i = 0;
                 while(i < gui.getOrderList().getItemCount())
                 {
@@ -426,7 +429,31 @@ public class MainSystem {
                 {
                     Order order = (Order) it1.next();
                     ArrayList<Talk> talks = order.getTalks();
+                    Iterator<Talk> talksIteratorToAddTime = talks.iterator();
+                    while(talksIteratorToAddTime.hasNext())
+                    {
+                        Talk talk = talksIteratorToAddTime.next();
+                        talk.setTalkTime(talkTimes.get(talk.getFilePlusCode()));
+                    }
+                    if( talks.isEmpty() )
+                    {
+                        ;
+                    }
+                    else
+                    {
+                        TalksComparator talksComparator = new TalksComparator();
+                        Collections.sort(talks, talksComparator);
+                        Collections.reverse(talks);
+                        finalMessage = finalMessage + "The order with ID: " + 
+                            order.getOrderID() + " will be available to fulfill"
+                            + " on " + talks.get(0).getTalkTime().dayOfWeek().
+                                getAsText() + " at " + talks.get(0).getTalkTime().
+                                getHourOfDay() + ":" + talks.get(0).
+                                getTalkTime().getMinuteOfHour() + "\n";
+                    }
+                    
                 }
+                JOptionPane.showMessageDialog(gui.getMainFrame(), finalMessage);
             }
         });
     }
