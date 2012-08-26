@@ -301,7 +301,7 @@ public class MainSystem {
                     final int[] progressArray = new int[talks.size()]; 
                     while(it1.hasNext())
                     {
-                        gui.getMainFrame().setCursor(Cursor.WAIT_CURSOR);
+                        gui.getMainFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
                         gui.updateStatus("Copying Files ( " + filesCopied + 
                                 " of " + talks.size());
                         Talk talk = (Talk) it1.next(); 
@@ -341,7 +341,7 @@ public class MainSystem {
                                     {
                                         try
                                         {
-                                            gui.getMainFrame().setCursor(Cursor.DEFAULT_CURSOR);
+                                            gui.getMainFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                                             gui.getRefresh().setEnabled(true);
                                             gui.getFulfillOrder().setEnabled
                                                     (true);
