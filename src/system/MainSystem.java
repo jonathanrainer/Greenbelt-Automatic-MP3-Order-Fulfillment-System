@@ -302,8 +302,8 @@ public class MainSystem {
                     while(it1.hasNext())
                     {
                         gui.getMainFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                        gui.updateStatus("Copying Files ( " + filesCopied + 
-                                " of " + talks.size());
+                        gui.updateStatus("Copying Files (" + filesCopied + 
+                                " of " + talks.size() +")");
                         Talk talk = (Talk) it1.next(); 
                         fileCopyEngine = new FileCopyEngine(talksLocation, 
                                 talk.getFileName(), destination);
@@ -366,9 +366,9 @@ public class MainSystem {
 
                                 else
                                 {
-                                    gui.updateStatus("Copying Files ( " + 
+                                    gui.updateStatus("Copying Files (" + 
                                             filesCopied + " of " + 
-                                            talks.size() + " completed )");
+                                            talks.size() + " completed)");
                                 }
                             }
                         });
