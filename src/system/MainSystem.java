@@ -1,5 +1,6 @@
 package system;
 
+import comparator.OrderComparator;
 import comparator.TalksComparator;
 import config.Config;
 import gui.MainGUI;
@@ -455,25 +456,31 @@ public class MainSystem {
                         TalksComparator talksComparator = new TalksComparator();
                         Collections.sort(talks, talksComparator);
                         Collections.reverse(talks);
-                        String alteredMinutes = "";
-                        if(talks.get(0).getTalkTime().getMinuteOfHour() < 10)
-                        {
-                            alteredMinutes = "0" + talks.get(0).getTalkTime().
-                                    getMinuteOfHour();
-                        }
-                        else
-                        {
-                            alteredMinutes = "" + talks.get(0).getTalkTime().
-                                    getMinuteOfHour();
-                        }
-                        finalMessage = finalMessage + "The order with ID: " + 
-                            order.getOrderID() + " will be available to fulfill"
-                            + " at approximately " + talks.get(0).getTalkTime().dayOfWeek().
-                                getAsText() + " at " + (talks.get(0).getTalkTime().
-                                getHourOfDay() + 3) + ":" + alteredMinutes + 
-                                "\n";
+                        order.setWhenFulfillable(talks.get(0).getTalkTime());
                     }
                     
+                }
+                OrderComparator orderComparator = new OrderComparator();
+                Collections.sort(orders, orderComparator);
+                Iterator<Order> it2 = orders.iterator();
+                while(it2.hasNext())
+                {
+                    String alteredMinutes = "";
+                    Order order = it2.next();
+                    if(order.getWhenFulfillable().getMinuteOfHour() < 10)
+                    {
+                        alteredMinutes = "0" + order.getWhenFulfillable().getMinuteOfHour();
+                    }
+                    else
+                    {
+                        alteredMinutes = "" + order.getWhenFulfillable().getMinuteOfHour();
+                    }
+                    finalMessage = finalMessage + "The order with ID: " + 
+                        order.getOrderID() + " will be available to fulfill"
+                        + " at approximately " + order.getWhenFulfillable().dayOfWeek().
+                            getAsText() + " at " + (order.getWhenFulfillable().
+                            getHourOfDay() + 3) + ":" + alteredMinutes + 
+                            "\n";
                 }
                 JOptionPane.showMessageDialog(gui.getMainFrame(), finalMessage);
             }
