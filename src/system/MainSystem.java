@@ -442,7 +442,7 @@ public class MainSystem {
                         }
                         else
                         {
-                            DateTime notHappeneningDate = new DateTime();
+                            DateTime notHappeneningDate = new DateTime(2000, 1, 1, 1, 1);
                             talk.setTalkTime(notHappeneningDate);
                         }
                         
