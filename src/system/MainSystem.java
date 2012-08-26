@@ -81,7 +81,7 @@ public class MainSystem {
         }
         try
         {
-            orderList = queryEngine.generateOrderList(); 
+            orderList = queryEngine.generateFulfillableOrderList(); 
         }
         catch(Exception e)
         {
@@ -156,7 +156,7 @@ public class MainSystem {
         orderList.clear();
         try
         {
-            orderList = queryEngine.generateOrderList();
+            orderList = queryEngine.generateFulfillableOrderList();
         }
         catch(Exception e)
         {
@@ -408,13 +408,15 @@ public class MainSystem {
             public void actionPerformed(ActionEvent e)
             {
                 ArrayList<Order> orders = new ArrayList<Order>();
-                String finalMessage = "";
-                int i = 0;
-                while(i < gui.getOrderList().getItemCount())
+                try
                 {
-                    orders.add( (Order) gui.getOrderList().getItemAt(i));
-                    i++;
+                    orders = queryEngine.generateCompleteOrderList();
                 }
+                catch (Exception ex)
+                {
+                    
+                }
+                String finalMessage = "";
                 Iterator it1 = orders.iterator();
                 CSVEngine csvEngine = new CSVEngine();
                 File datesAndTimesFile = null;
@@ -433,7 +435,16 @@ public class MainSystem {
                     while(talksIteratorToAddTime.hasNext())
                     {
                         Talk talk = talksIteratorToAddTime.next();
-                        talk.setTalkTime(talkTimes.get(talk.getFilePlusCode()));
+                        if(talkTimes.get(talk.getFilePlusCode()) != null)
+                        {
+                            talk.setTalkTime(talkTimes.get(talk.getFilePlusCode()));
+                        }
+                        else
+                        {
+                            DateTime notHappeneningDate = new DateTime();
+                            talk.setTalkTime(notHappeneningDate);
+                        }
+                        
                     }
                     if( talks.isEmpty() )
                     {
@@ -459,7 +470,7 @@ public class MainSystem {
                             order.getOrderID() + " will be available to fulfill"
                             + " at approximately " + talks.get(0).getTalkTime().dayOfWeek().
                                 getAsText() + " at " + (talks.get(0).getTalkTime().
-                                getHourOfDay() + 1) + ":" + alteredMinutes + 
+                                getHourOfDay() + 3) + ":" + alteredMinutes + 
                                 "\n";
                     }
                     
