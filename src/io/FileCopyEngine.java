@@ -4,7 +4,6 @@
  */
 package io;
 
-import java.beans.PropertyChangeSupport;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
