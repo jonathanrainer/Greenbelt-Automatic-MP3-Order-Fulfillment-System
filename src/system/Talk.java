@@ -1,5 +1,7 @@
 package system;
 
+import org.joda.time.DateTime;
+
 /**
  * A class to encapsulate a talk with all the details about it accessible but 
  * not editable.
@@ -18,6 +20,8 @@ public final class Talk {
     private String fileName;
     // String to store files name with code appended
     private String filePlusCode;
+    // Storing the time that the talk occurs
+    private DateTime talkTime;
     
     /**
      * A constructor to create each talk object.
@@ -117,5 +121,16 @@ public final class Talk {
     {
         return filePlusCode;
     }
+    
+    public DateTime getTalkTime()
+    {
+        return talkTime;
+    }
+    
+    public void setTalkTime(DateTime talkTime)
+    {
+        this.talkTime = talkTime;
+    }
+    
 }
  
