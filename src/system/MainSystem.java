@@ -139,11 +139,11 @@ public class MainSystem {
     public void updateOrdersToFulfillComboBox(MainGUI gui, ArrayList<Order> orders)
     {
             gui.getOrderList().removeAllItems();
-            Iterator it1 = orders.iterator();
+            Iterator<Order> it1 = orders.iterator();
             int i = 0;
             while(it1.hasNext())
             {
-                Order order = (Order) it1.next();
+                Order order = it1.next();
                 if(order.getFulfillable())
                 {
                     gui.getOrderList().insertItemAt(order, i);
@@ -175,11 +175,11 @@ public class MainSystem {
             destinations)
     {
         gui.getDestinationList().removeAllItems();
-        Iterator it1 = destinations.iterator();
+        Iterator<File> it1 = destinations.iterator();
         int i = 0;
         while(it1.hasNext())
         {
-            File file = (File) it1.next();
+            File file = it1.next();
             gui.getDestinationList().insertItemAt(file, i);
             i++;
         }
@@ -236,7 +236,7 @@ public class MainSystem {
                     String textBoxContents = "Order ID: " + currentItem.
                             getOrderID() + " \n \nTalks: \n";
                     int i = 1;
-                    Iterator it1 = talks.iterator();
+                    Iterator<Talk> it1 = talks.iterator();
                     while(it1.hasNext())
                     {
                         Talk talk = (Talk) it1.next();
@@ -273,18 +273,17 @@ public class MainSystem {
                         get("talkslocation");
                 final String destination = (String) gui.getDestinationList().
                         getSelectedItem().toString();
-                Iterator hashMapCreationIterator = order.getTalks().iterator();
+                Iterator<Talk> hashMapCreationIterator = order.getTalks().iterator();
                 int i = 0;
                 final HashMap<String, Integer> fileMap = new HashMap<String, 
                             Integer>();
                 while(hashMapCreationIterator.hasNext() && i < order.
                         getTalks().size())
                 {
-                    Talk talk = (Talk) hashMapCreationIterator.next();
+                    Talk talk = hashMapCreationIterator.next();
                     fileMap.put(talk.getFileName(), i);
                     i++;
-                }
-                System.out.println(fileMap);
+                }   
                 try
                 {
                     final ArrayList<Talk> talks = preCopyingSpaceCheck(order,
@@ -296,7 +295,7 @@ public class MainSystem {
                                 + "on one memory stick.");
                         return;
                     }
-                    Iterator it1 = talks.iterator();
+                    Iterator<Talk> it1 = talks.iterator();
                     filesCopied = 0;
                     final int[] progressArray = new int[talks.size()]; 
                     while(it1.hasNext())
@@ -304,7 +303,7 @@ public class MainSystem {
                         gui.getMainFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
                         gui.updateStatus("Copying Files (" + filesCopied + 
                                 " of " + talks.size() +")");
-                        Talk talk = (Talk) it1.next(); 
+                        Talk talk = it1.next(); 
                         fileCopyEngine = new FileCopyEngine(talksLocation, 
                                 talk.getFileName(), destination);
                         fileCopyEngine.addPropertyChangeListener(new 
@@ -418,7 +417,7 @@ public class MainSystem {
                     
                 }
                 String finalMessage = "";
-                Iterator it1 = orders.iterator();
+                Iterator<Order> it1 = orders.iterator();
                 CSVEngine csvEngine = new CSVEngine();
                 File datesAndTimesFile = null;
                 JFileChooser fc = new JFileChooser();
@@ -491,11 +490,11 @@ public class MainSystem {
             destinationDir)
     {
         ArrayList<Talk> talks = order.getTalks();
-        Iterator it1 = talks.iterator();
+        Iterator<Talk> it1 = talks.iterator();
         boolean checkPasses = true;
         while (it1.hasNext())
         {
-            Talk talk = (Talk) it1.next();
+            Talk talk = it1.next();
             File destinationFile = new File(destinationDir + File.separator + 
                     talk.getFileName());
             File sourceFile = new File(sourceDir + File.separator + 
@@ -520,7 +519,7 @@ public class MainSystem {
             String destinationDir)
     { 
         ArrayList<Talk> talksComplete = order.getTalks();
-        Iterator it1 = talksComplete.iterator();
+        Iterator<Talk> it1 = talksComplete.iterator();
         long talksOverallSize = 0;
         int i = 0;
         boolean exceeded = false;
