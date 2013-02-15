@@ -468,17 +468,20 @@ public class MainSystem {
                     Order order = it2.next();
                     if(order.getWhenFulfillable().getMinuteOfHour() < 10)
                     {
-                        alteredMinutes = "0" + order.getWhenFulfillable().getMinuteOfHour();
+                        alteredMinutes = "0" + order.getWhenFulfillable().
+                                getMinuteOfHour();
                     }
                     else
                     {
-                        alteredMinutes = "" + order.getWhenFulfillable().getMinuteOfHour();
+                        alteredMinutes = "" + order.getWhenFulfillable().
+                                getMinuteOfHour();
                     }
                     finalMessage = finalMessage + "The order with ID: " + 
                         order.getOrderID() + " will be available to fulfill"
-                        + " at approximately " + order.getWhenFulfillable().dayOfWeek().
-                            getAsText() + " at " + (order.getWhenFulfillable().
-                            getHourOfDay() + 3) + ":" + alteredMinutes + 
+                        + " at approximately " + order.getWhenFulfillable().
+                            dayOfWeek().getAsText() + " at " + 
+                            (order.getWhenFulfillable().getHourOfDay() + 3) + 
+                            ":" + alteredMinutes + 
                             "\n";
                 }
                 JOptionPane.showMessageDialog(gui.getMainFrame(), finalMessage);

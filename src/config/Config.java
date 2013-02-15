@@ -63,6 +63,11 @@ public class Config {
         return configs;
     }
     
+    /**
+     * Allows a new configuration to be loaded 
+     * @param configs The new HashMap containing the configuration
+     */
+    
     public void setConfiguration(HashMap<String,String> configs)
     {
         this.configs = configs;

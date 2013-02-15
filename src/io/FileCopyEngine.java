@@ -35,12 +35,14 @@ public class FileCopyEngine extends SwingWorker<Void,Void> {
     @Override
     protected Void doInBackground() throws IOException
     {      
-        URL originalFileURL = originalFile.toURI().toURL();
+        URL originalFileURL;
+        originalFileURL = originalFile.toURI().toURL();
         URLConnection connection = originalFileURL.openConnection();
         InputStream inputStream = connection.getInputStream();
         
         float length = connection.getContentLength();
-        float current = 0f;
+        float current;
+        current = 0f;
         
         int progress = calculateProgress(length, current);
         setProgress(progress);
