@@ -7,10 +7,8 @@ package io;
 import java.io.*;
 import java.util.*;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeComparator;
 
 /**
  *
@@ -81,7 +79,7 @@ public class CSVEngine {
                     {
                         config_names.add(input);
                     }
-                    else if(!first)
+                    else
                     {
                         config_values.add(input);
                     }
